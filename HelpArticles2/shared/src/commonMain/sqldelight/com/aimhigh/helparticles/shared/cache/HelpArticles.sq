@@ -1,0 +1,43 @@
+import kotlin.Boolean;
+
+-- Cache for articles list
+CREATE TABLE ArticleCache (
+    id TEXT NOT NULL PRIMARY KEY,
+    title TEXT NOT NULL,
+    summary TEXT NOT NULL,
+    content TEXT NOT NULL,
+    lastUpdatedTimestamp INTEGER NOT NULL,
+    cachedAtTimestamp INTEGER NOT NULL
+);
+
+-- Cache metadata to track last successful fetch
+CREATE TABLE CacheMetadata (
+    key TEXT NOT NULL PRIMARY KEY,
+    lastFetchTimestamp INTEGER NOT NULL,
+    isStale INTEGER AS Boolean NOT NULL DEFAULT 0
+);
+
+-- Queries for ArticleCache
+insertOrReplaceArticle:
+INSERT OR REPLACE INTO ArticleCache(id, title, summary, content, lastUpdatedTimestamp, cachedAtTimestamp)
+VALUES (?, ?, ?, ?, ?, ?);
+
+getAllArticles:
+SELECT * FROM ArticleCache ORDER BY lastUpdatedTimestamp DESC;
+
+getArticleById:
+SELECT * FROM ArticleCache WHERE id = ?;
+
+deleteAllArticles:
+DELETE FROM ArticleCache;
+
+-- Queries for CacheMetadata
+insertOrReplaceMetadata:
+INSERT OR REPLACE INTO CacheMetadata(key, lastFetchTimestamp, isStale)
+VALUES (?, ?, ?);
+
+getMetadata:
+SELECT * FROM CacheMetadata WHERE key = ?;
+
+deleteMetadata:
+DELETE FROM CacheMetadata WHERE key = ?;
