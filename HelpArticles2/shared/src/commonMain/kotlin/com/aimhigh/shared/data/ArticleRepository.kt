@@ -1,18 +1,10 @@
 package com.aimhigh.shared.data
 
-
 import com.aimhigh.shared.cache.ArticleCache
 import com.aimhigh.shared.domain.Article
 import com.aimhigh.shared.domain.Result
 import kotlinx.coroutines.flow.Flow
 
-/**
- * Repository implementing offline-first pattern:
- * 1. Check cache first
- * 2. If cache is stale or missing, fetch from network
- * 3. Update cache with fresh data
- * 4. Return cached data if network fails
- */
 interface ArticleRepository {
     suspend fun getArticles(forceRefresh: Boolean = false): Result<List<Article>>
     suspend fun getArticleDetail(id: String, forceRefresh: Boolean = false): Result<Article>

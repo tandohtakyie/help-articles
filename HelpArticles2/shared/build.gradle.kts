@@ -8,6 +8,8 @@ plugins {
 
 kotlin {
 
+    jvm()
+
     // Target declarations - add or remove as needed below. These define
     // which platforms this KMP module supports.
     // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
@@ -79,7 +81,6 @@ kotlin {
                 implementation(libs.kotlin.test)
                 implementation(libs.kotlinx.coroutines.test)
                 implementation(libs.ktor.client.mock)
-                implementation(kotlin("test"))
             }
         }
 
@@ -91,6 +92,20 @@ kotlin {
                 implementation(libs.ktor.client.okhttp)
                 implementation(libs.sqldelight.android.driver)
                 implementation(libs.androidx.sqlite)
+            }
+        }
+
+        androidUnitTest {
+            dependencies {
+                implementation(kotlin("test-junit"))
+                implementation(libs.junit)
+            }
+        }
+
+        jvmTest {
+            dependencies {
+                implementation(libs.sqldelight.sqlite.driver)
+                implementation(libs.sqlite.jdbc)
             }
         }
 
